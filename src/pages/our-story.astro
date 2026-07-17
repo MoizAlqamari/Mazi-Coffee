@@ -1,0 +1,163 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Nav from "@components/Nav.astro";
+import Footer from "@components/Footer.astro";
+import SmoothScroll from "@components/SmoothScroll.astro";
+import Grain from "@components/Grain.astro";
+import PhotoBand from "@components/PhotoBand.astro";
+import Reveal from "@components/Reveal.astro";
+import SectionHeading from "@components/SectionHeading.astro";
+const img = (seed: string, w = 1600, h = 2000) =>
+  `https://picsum.photos/seed/${seed}/${w}/${h}`;
+---
+
+<BaseLayout
+  title="Our Story"
+  description="How Mazi began: a specialty coffee shop in North Nazimabad built on nostalgia, slow mornings, and long conversations."
+  path="/our-story"
+  image="/og-story.jpg"
+  type="article"
+>
+  <SmoothScroll />
+  <Grain />
+  <Nav />
+
+  <main>
+    <PhotoBand
+      image={img("mazi-story-hero", 2000, 2400)}
+      alt="The empty café before opening, chairs turned toward the window."
+      title="Our story"
+      eyebrow="North Nazimabad, Karachi"
+      align="center"
+      size="full"
+    />
+
+    <section class="prose">
+      <div class="prose__inner reading-column">
+        <Reveal>
+          <p class="prose__lead display-lg">
+            Mazi started as a disagreement with how we were drinking coffee.
+          </p>
+        </Reveal>
+        <Reveal>
+          <p class="prose__body">
+            Somewhere between the takeaway cup and the laptop, the café stopped being
+            a place to be. It became a transaction. We missed the rooms our parents
+            talked about, the ones where the chair creaked, the fan turned slow, and
+            nobody checked the time.
+          </p>
+        </Reveal>
+        <Reveal>
+          <p class="prose__body">
+            So we built one. Mazi, a word that means companion, is a small specialty
+            coffee shop in North Nazimabad where the coffee is patient and the
+            conversation is the point. The room is shaped by memory: warm light,
+            worn wood, records on the weekends, and a long table in the middle that
+            anyone can join.
+          </p>
+        </Reveal>
+        <Reveal>
+          <p class="prose__body">
+            We are not a chain and we are not trying to be. Every cup is pulled by
+            hand, every playlist is chosen, and every regular is known by name. If
+            you are looking for a place to slow down, you have found it.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+
+    <PhotoBand
+      image={img("mazi-story-barista", 2000, 1600)}
+      alt="A barista wiping a ceramic cup behind the espresso machine."
+      eyebrow="The room"
+      title="Set down for slowness"
+      body="No Wi-Fi on the tables. Phones face-down. The room does the rest."
+      cta={{ label: "The experience", href: "/experience" }}
+      align="start"
+      size="tall"
+    />
+
+    <section class="values">
+      <div class="values__inner reading-column">
+        <SectionHeading title="What we hold to" />
+        <ul class="values__list">
+          <Reveal as="li" class="values__item" data-stagger>
+            <h2 class="values__title display-lg">Patience</h2>
+            <p class="values__text">
+              A V60 takes three minutes. We think that is the right amount of time to
+              wait for something good.
+            </p>
+          </Reveal>
+          <Reveal as="li" class="values__item" data-stagger>
+            <h2 class="values__title display-lg">Craft</h2>
+            <p class="values__text">
+              Small-batch roasting, blind tasting, and a barista who knows your order
+              by the second week.
+            </p>
+          </Reveal>
+          <Reveal as="li" class="values__item" data-stagger>
+            <h2 class="values__title display-lg">Company</h2>
+            <p class="values__text">
+              The café exists for the people in it. Come alone, leave with a table.
+            </p>
+          </Reveal>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .prose {
+    padding-block: clamp(4rem, 12vw, 8rem);
+  }
+  .prose__inner {
+    max-width: 760px;
+  }
+  .prose__lead {
+    margin: 0 0 2rem;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  .prose__body {
+    margin: 0 0 1.5rem;
+    color: var(--color-on-primary-mute);
+    font-size: var(--text-body-lg);
+    line-height: 1.8;
+    max-width: 62ch;
+  }
+  .values {
+    padding-block: clamp(4rem, 12vw, 8rem);
+    background: var(--color-canvas-night-soft);
+  }
+  .values__list {
+    list-style: none;
+    margin: 3rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 2.5rem;
+  }
+  .values__title {
+    margin: 0 0 0.75rem;
+    font-size: clamp(26px, 4vw, 40px);
+  }
+  .values__text {
+    margin: 0;
+    color: var(--color-on-primary-mute);
+    max-width: 54ch;
+    line-height: 1.7;
+  }
+  @media (min-width: 768px) {
+    .values__list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduce && window.maziStagger) window.maziStagger("[data-stagger]");
+</script>

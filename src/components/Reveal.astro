@@ -1,0 +1,90 @@
+---
+// Scroll-reveal wrapper using Motion. Calm, cinematic, intentional.
+// Degrades to fully visible under prefers-reduced-motion.
+export interface Props {
+  as?: string;
+  delay?: number;
+  class?: string;
+}
+const { as = "div", delay = 0, class: className } = Astro.props;
+const Tag = as;
+---
+
+<Tag class:list={["reveal", className]} data-reveal data-delay={delay}>
+  <slot />
+</Tag>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 700ms var(--ease-out-cinematic),
+      transform 700ms var(--ease-out-cinematic);
+    will-change: transform, opacity;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  declare global {
+    interface Window {
+      maziStagger?: (selector: string) => void;
+    }
+  }
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const EASE = "cubic-bezier(0.23, 1, 0.32, 1)";
+
+  const items = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+
+  if (reduce || !items.length) {
+    items.forEach((el) => el.classList.add("is-visible"));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          const delay = Number(el.dataset.delay || 0);
+          el.animate(
+            [
+              { opacity: 0, transform: "translateY(24px)" },
+              { opacity: 1, transform: "translateY(0)" },
+            ],
+            { duration: 700, delay, easing: EASE, fill: "both" }
+          );
+          el.classList.add("is-visible");
+          io.unobserve(el);
+        });
+      },
+      { threshold: 0.18, rootMargin: "0px 0px -8% 0px" }
+    );
+    items.forEach((el) => io.observe(el));
+  }
+
+  // Stagger helper for grouped children (used by some sections)
+  window.maziStagger = (selector: string) => {
+    if (reduce) return;
+    const group = document.querySelectorAll<HTMLElement>(selector);
+    group.forEach((el, i) => {
+      el.animate(
+        [
+          { opacity: 0, transform: "translateY(20px)" },
+          { opacity: 1, transform: "translateY(0)" },
+        ],
+        { duration: 600, delay: i * 70, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "both" }
+      );
+    });
+  };
+</script>

@@ -1,0 +1,24 @@
+---
+// Ambient decorative motion via Anime.js. Calm and cinematic only.
+// A very slow, subtle scale "breathing" on the data-ambient element.
+// Fully disabled under prefers-reduced-motion.
+---
+
+<script>
+  import anime from "animejs";
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduce) {
+    const el = document.querySelector<HTMLElement>("[data-ambient]");
+    if (el) {
+      anime({
+        targets: el,
+        scale: [1.04, 1.1],
+        duration: 12000,
+        direction: "alternate",
+        easing: "easeInOutSine",
+        loop: true,
+      });
+    }
+  }
+</script>

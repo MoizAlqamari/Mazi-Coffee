@@ -1,0 +1,316 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Nav from "@components/Nav.astro";
+import Footer from "@components/Footer.astro";
+import SmoothScroll from "@components/SmoothScroll.astro";
+import Grain from "@components/Grain.astro";
+import Reveal from "@components/Reveal.astro";
+import SectionHeading from "@components/SectionHeading.astro";
+import { site } from "@data/site";
+
+const img = (seed: string, w = 1600, h = 2000) =>
+  `https://picsum.photos/seed/${seed}/${w}/${h}`;
+---
+
+<BaseLayout
+  title="Contact"
+  description="Visit Mazi Specialty Coffee in North Nazimabad, Karachi. Hours, directions, and a form to book the long table."
+  path="/contact"
+  image="/og-contact.jpg"
+>
+  <SmoothScroll />
+  <Grain />
+  <Nav />
+
+  <main>
+    <section class="contact-hero">
+      <div class="contact-hero__inner reading-column">
+        <SectionHeading
+          eyebrow="Visit us"
+          title="Come sit with us"
+          body="North Nazimabad, open early and closing late. The door is unlocked, the chair is pulled out."
+        />
+      </div>
+    </section>
+
+    <section class="contact">
+      <div class="contact__inner reading-column">
+        <div class="contact__grid">
+          <div class="contact__info">
+            <Reveal class="contact__block" data-stagger>
+              <p class="contact__label micro-cap">Address</p>
+              <p class="contact__value">
+                {site.address.street}<br />{site.address.city}, {site.address.region}
+              </p>
+            </Reveal>
+            <Reveal class="contact__block" data-stagger>
+              <p class="contact__label micro-cap">Hours</p>
+              <ul class="contact__hours">
+                {
+                  site.hours.map((h) => (
+                    <li>
+                      <span>{h.days}</span>
+                      <span>{h.time}</span>
+                    </li>
+                  ))
+                }
+              </ul>
+            </Reveal>
+            <Reveal class="contact__block" data-stagger>
+              <p class="contact__label micro-cap">Reach us</p>
+              <p class="contact__value">
+                <a class="contact__link" href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a><br />
+                <a class="contact__link" href={`mailto:${site.email}`}>{site.email}</a>
+              </p>
+            </Reveal>
+          </div>
+
+          <Reveal class="contact__form-wrap" data-stagger>
+            <form class="contact__form" action="#" method="post" data-contact-form novalidate>
+              <h2 class="contact__form-title display-lg">Book the long table</h2>
+              <p class="contact__form-note caption">
+                Tell us when you are coming. We will write back to confirm.
+              </p>
+
+              <div class="field">
+                <label class="field__label micro-cap" for="name">Name</label>
+                <input class="field__input" id="name" name="name" type="text" autocomplete="name" required />
+                <p class="field__error" data-error-for="name" hidden>Please tell us your name.</p>
+              </div>
+
+              <div class="field">
+                <label class="field__label micro-cap" for="email">Email</label>
+                <input class="field__input" id="email" name="email" type="email" autocomplete="email" required />
+                <p class="field__error" data-error-for="email" hidden>Please enter a valid email.</p>
+              </div>
+
+              <div class="field">
+                <label class="field__label micro-cap" for="date">When</label>
+                <input class="field__input" id="date" name="date" type="date" required />
+                <p class="field__error" data-error-for="date" hidden>Pick a date you would like to come.</p>
+              </div>
+
+              <div class="field">
+                <label class="field__label micro-cap" for="message">Anything we should know</label>
+                <textarea class="field__input field__input--area" id="message" name="message" rows="4"></textarea>
+              </div>
+
+              <button class="btn-ghost contact__submit" type="submit">Send request</button>
+              <p class="contact__success" data-success hidden>
+                Thank you. Your request is with us, we will be in touch soon.
+              </p>
+            </form>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+
+    <section class="map">
+      <div class="map__frame" role="img" aria-label={`Map showing ${site.name} in ${site.address.city}`}>
+        <img
+          src={img("mazi-map-street", 2000, 1000)}
+          alt={`Street view near ${site.address.street}, ${site.address.city}.`}
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="map__pin" aria-hidden="true">
+          <span class="map__pin-dot"></span>
+          <span class="map__pin-label micro-cap">{site.shortName}</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .contact-hero {
+    padding-block: clamp(7rem, 18vh, 11rem) clamp(2rem, 6vw, 4rem);
+  }
+  .contact {
+    padding-bottom: clamp(4rem, 12vw, 8rem);
+  }
+  .contact__grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .contact__block {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-hairline-dark);
+  }
+  .contact__block:last-child {
+    border-bottom: 0;
+  }
+  .contact__label {
+    margin: 0 0 0.75rem;
+    color: var(--color-on-primary-mute);
+    opacity: 0.7;
+  }
+  .contact__value {
+    margin: 0;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.96px;
+    font-size: clamp(18px, 2.6vw, 24px);
+    line-height: 1.4;
+  }
+  .contact__link {
+    color: var(--color-on-primary);
+    text-decoration: none;
+  }
+  .contact__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .contact__hours {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .contact__hours li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--color-on-primary-mute);
+    font-size: 15px;
+  }
+  .contact__hours span:last-child {
+    font-family: var(--font-display);
+    letter-spacing: 0.96px;
+    color: var(--color-on-primary);
+  }
+
+  .contact__form {
+    border: 1px solid var(--color-hairline-dark);
+    border-radius: var(--radius-md);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    background: var(--color-canvas-night-soft);
+  }
+  .contact__form-title {
+    margin: 0;
+    font-size: clamp(24px, 4vw, 34px);
+  }
+  .contact__form-note {
+    margin: 0.75rem 0 2rem;
+    color: var(--color-on-primary-mute);
+    opacity: 0.75;
+  }
+  .field {
+    margin-bottom: 1.5rem;
+  }
+  .field__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-on-primary-mute);
+  }
+  .field__input {
+    width: 100%;
+    background: var(--color-canvas-light);
+    color: var(--color-ink);
+    border: 1px solid var(--color-hairline-light);
+    border-radius: var(--radius-xs);
+    padding: 12px 16px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    transition: border-color 160ms var(--ease-out-cinematic);
+  }
+  .field__input:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+  .field__input--area {
+    resize: vertical;
+    min-height: 110px;
+  }
+  .field__error {
+    margin: 0.5rem 0 0;
+    color: #ffd2d2;
+    font-size: 13px;
+  }
+  .contact__submit {
+    margin-top: 0.5rem;
+  }
+  .contact__success {
+    margin: 1.5rem 0 0;
+    color: var(--color-on-primary);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .map {
+    padding-bottom: clamp(4rem, 12vw, 8rem);
+  }
+  .map__frame {
+    position: relative;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 3rem);
+  }
+  .map__frame img {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    filter: grayscale(1) contrast(1.05) brightness(0.7);
+  }
+  .map__pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .map__pin-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: var(--color-on-primary);
+    box-shadow: 0 0 0 6px rgb(255 255 255 / 0.18);
+  }
+  .map__pin-label {
+    color: var(--color-on-primary);
+    background: rgb(0 0 0 / 0.6);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+  }
+
+  @media (min-width: 900px) {
+    .contact__grid {
+      grid-template-columns: 1fr 1.1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduce && window.maziStagger) window.maziStagger("[data-stagger]");
+
+  // Accessible client-side validation (no backend wired yet).
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fields = ["name", "email", "date"] as const;
+    let valid = true;
+    for (const id of fields) {
+      const input = form.querySelector<HTMLInputElement>(`#${id}`);
+      const err = form.querySelector<HTMLElement>(`[data-error-for="${id}"]`);
+      if (!input || !err) continue;
+      const ok = id === "email" ? /.+@.+\..+/.test(input.value) : input.value.trim() !== "";
+      err.hidden = ok;
+      input.setAttribute("aria-invalid", String(!ok));
+      if (!ok) valid = false;
+    }
+    if (valid) {
+      form.querySelector<HTMLElement>("[data-success]")?.removeAttribute("hidden");
+      form.reset();
+    }
+  });
+</script>

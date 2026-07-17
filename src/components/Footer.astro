@@ -1,0 +1,116 @@
+---
+import { site, nav } from "@data/site";
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__inner reading-column">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <p class="footer__wordmark display-lg">{site.shortName}</p>
+        <p class="footer__tag caption">{site.tagline}</p>
+      </div>
+
+      <nav class="footer__nav" aria-label="Footer">
+        {
+          nav.map((item) => (
+            <a class="footer__link micro-cap" href={item.href}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="footer__contact">
+        <a class="footer__link micro-cap" href={`tel:${site.phone.replace(/\s/g, "")}`}>
+          {site.phone}
+        </a>
+        <a class="footer__link micro-cap" href={`mailto:${site.email}`}>
+          {site.email}
+        </a>
+        <p class="footer__link micro-cap">
+          {site.address.street}, {site.address.city}
+        </p>
+      </div>
+    </div>
+
+    <hr class="hairline" />
+
+    <div class="footer__bottom">
+      <p class="caption">© {year} {site.name}. Made for slow mornings.</p>
+      <div class="footer__social">
+        <a class="footer__link micro-cap" href={site.social.instagram} rel="noopener" target="_blank">
+          Instagram
+        </a>
+        <a class="footer__link micro-cap" href={site.social.facebook} rel="noopener" target="_blank">
+          Facebook
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-canvas-night);
+    color: var(--color-on-primary);
+    padding: 4rem 0 2.5rem;
+    border-top: 1px solid var(--color-hairline-dark);
+  }
+  .footer__top {
+    display: grid;
+    gap: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .footer__wordmark {
+    margin: 0;
+    letter-spacing: 1.6px;
+  }
+  .footer__tag {
+    margin: 0.75rem 0 0;
+    color: var(--color-on-primary-mute);
+    max-width: 32ch;
+  }
+  .footer__nav,
+  .footer__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .footer__link {
+    color: var(--color-on-primary);
+    text-decoration: none;
+    opacity: 0.78;
+    transition: opacity 160ms var(--ease-out-cinematic);
+    width: fit-content;
+  }
+  .footer__link:hover {
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+  }
+  .footer__bottom .caption {
+    margin: 0;
+    color: var(--color-on-primary-mute);
+    opacity: 0.7;
+  }
+  .footer__social {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer__top {
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

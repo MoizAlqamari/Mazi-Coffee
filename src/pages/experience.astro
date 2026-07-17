@@ -1,0 +1,155 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Nav from "@components/Nav.astro";
+import Footer from "@components/Footer.astro";
+import SmoothScroll from "@components/SmoothScroll.astro";
+import Grain from "@components/Grain.astro";
+import PhotoBand from "@components/PhotoBand.astro";
+import Reveal from "@components/Reveal.astro";
+import SectionHeading from "@components/SectionHeading.astro";
+
+const img = (seed: string, w = 1600, h = 2000) =>
+  `https://picsum.photos/seed/${seed}/${w}/${h}`;
+
+const rituals = [
+  {
+    title: "The Phone Stack",
+    text: "Walk in with friends and stack your phones face-down on the table. The first to reach for one buys the next round.",
+  },
+  {
+    title: "The Slow Hour",
+    text: "Before ten each morning the room is kept quiet. No music, low light, just the sound of the grinder and the street waking up.",
+  },
+  {
+    title: "Vinyl Fridays",
+    text: "Friday evenings run on records chosen by the staff. Bring one you love and it might find the turntable.",
+  },
+  {
+    title: "The Long Table",
+    text: "One shared table in the middle of the room. Sit anywhere. Strangers at Mazi have a habit of leaving as regulars.",
+  },
+];
+---
+
+<BaseLayout
+  title="Experience"
+  description="The Mazi experience: disconnect from the screen and reconnect with the room. The phone stack, the slow hour, vinyl Fridays, and the long table."
+  path="/experience"
+  image="/og-experience.jpg"
+>
+  <SmoothScroll />
+  <Grain />
+  <Nav />
+
+  <main>
+    <PhotoBand
+      image={img("mazi-experience-hero", 2000, 2400)}
+      alt="Two people talking across a small table, phones stacked face-down beside the cups."
+      title="The experience"
+      eyebrow="Disconnect to reconnect"
+      align="center"
+      size="full"
+    />
+
+    <section class="intro">
+      <div class="intro__inner reading-column">
+        <Reveal>
+          <p class="intro__lead display-lg">
+            We built the café to take the screen out of your hands.
+          </p>
+        </Reveal>
+        <Reveal>
+          <p class="intro__body">
+            There is no Wi-Fi on the tables. Not because we are against technology,
+            but because we have noticed what happens when it is gone. People look up.
+            They talk longer. They remember why they came in the first place. Mazi is
+            a small rebellion against the feed, and it is the warmest room we know how
+            to make.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+
+    <section class="rituals">
+      <div class="rituals__inner reading-column">
+        <SectionHeading title="How we slow down" />
+        <ul class="rituals__list">
+          {
+            rituals.map((r) => (
+              <Reveal as="li" class="rituals__item" data-stagger>
+                <h2 class="rituals__title display-lg">{r.title}</h2>
+                <p class="rituals__text">{r.text}</p>
+              </Reveal>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <PhotoBand
+      image={img("mazi-experience-night", 2000, 1600)}
+      alt="The café at night, low lamps, a few regulars deep in conversation."
+      eyebrow="Come as you are"
+      title="Stay past midnight if you like"
+      body="The chairs are comfortable and the company is better than your timeline."
+      cta={{ label: "Plan your visit", href: "/contact" }}
+      align="end"
+      size="tall"
+    />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-block: clamp(4rem, 12vw, 8rem);
+  }
+  .intro__inner {
+    max-width: 760px;
+  }
+  .intro__lead {
+    margin: 0 0 2rem;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  .intro__body {
+    margin: 0;
+    color: var(--color-on-primary-mute);
+    font-size: var(--text-body-lg);
+    line-height: 1.8;
+    max-width: 62ch;
+  }
+  .rituals {
+    padding-block: clamp(4rem, 12vw, 8rem);
+    background: var(--color-canvas-night-soft);
+  }
+  .rituals__list {
+    list-style: none;
+    margin: 3rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 2.5rem;
+  }
+  .rituals__title {
+    margin: 0 0 0.75rem;
+    font-size: clamp(24px, 4vw, 38px);
+  }
+  .rituals__text {
+    margin: 0;
+    color: var(--color-on-primary-mute);
+    max-width: 56ch;
+    line-height: 1.7;
+  }
+  @media (min-width: 768px) {
+    .rituals__list {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem;
+    }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduce && window.maziStagger) window.maziStagger("[data-stagger]");
+</script>

@@ -1,0 +1,129 @@
+---
+// Full-bleed photographic band (card-photo-band from DESIGN.md).
+// Type sits over the photograph; a single ghost pill CTA per band.
+export interface Props {
+  image: string;
+  alt: string;
+  eyebrow?: string;
+  title: string;
+  body?: string;
+  cta?: { label: string; href: string };
+  /** Vertical alignment of the overlaid content. */
+  align?: "start" | "center" | "end";
+  /** id for anchor navigation. */
+  id?: string;
+  /** Sizing of the band. */
+  size?: "full" | "tall" | "auto";
+}
+
+const {
+  image,
+  alt,
+  eyebrow,
+  title,
+  body,
+  cta,
+  align = "center",
+  id,
+  size = "full",
+} = Astro.props;
+---
+
+<section
+  class:list={["band", `band--${size}`, `band--${align}`]}
+  id={id}
+  style={`--band-image: url(${image})`}
+>
+  <img class="band__img" src={image} alt={alt} loading="lazy" decoding="async" />
+  <div class="band__scrim" aria-hidden="true"></div>
+  <div class="band__content reading-column">
+    {eyebrow && <p class="band__eyebrow micro-cap">{eyebrow}</p>}
+    <h2 class="band__title display-xl">{title}</h2>
+    {body && <p class="band__body">{body}</p>}
+    {
+      cta && (
+        <a class="btn-ghost band__cta" href={cta.href}>
+          {cta.label}
+        </a>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .band {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    background: var(--color-canvas-night);
+  }
+  .band--full {
+    min-height: 100svh;
+  }
+  .band--tall {
+    min-height: 78svh;
+  }
+  .band--auto {
+    min-height: 60svh;
+  }
+  .band--start {
+    align-items: flex-start;
+  }
+  .band--center {
+    align-items: center;
+  }
+  .band--end {
+    align-items: flex-end;
+  }
+  .band__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Photograph is graded so type lands cleanly; a faint scrim only
+       where type sits, never a gradient wash across the whole frame. */
+  }
+  .band__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgb(0 0 0 / 0.55) 0%,
+      rgb(0 0 0 / 0.15) 38%,
+      rgb(0 0 0 / 0.1) 100%
+    );
+  }
+  .band__content {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(5rem, 12vh, 9rem);
+    max-width: 1200px;
+  }
+  .band__eyebrow {
+    margin: 0 0 1rem;
+    color: var(--color-on-primary);
+    opacity: 0.85;
+  }
+  .band__title {
+    margin: 0;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .band__body {
+    margin: 1.5rem 0 0;
+    max-width: 52ch;
+    color: var(--color-on-primary-mute);
+    font-size: var(--text-body-lg);
+    line-height: 1.7;
+  }
+  .band__cta {
+    margin-top: 2.25rem;
+  }
+
+  @media (max-width: 600px) {
+    .band__body {
+      font-size: 15px;
+    }
+  }
+</style>

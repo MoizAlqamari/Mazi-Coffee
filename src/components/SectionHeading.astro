@@ -1,0 +1,52 @@
+---
+// Editorial section heading. Used sparingly; not an eyebrow on every
+// section (per design-taste pre-flight). Pass `eyebrow` only when it
+// names the topic in plain language.
+export interface Props {
+  eyebrow?: string;
+  title: string;
+  body?: string;
+  align?: "start" | "center";
+}
+const { eyebrow, title, body, align = "start" } = Astro.props;
+---
+
+<header class:list={["heading", `heading--${align}`]}>
+  {eyebrow && <p class="heading__eyebrow micro-cap">{eyebrow}</p>}
+  <h2 class="heading__title display-xl">{title}</h2>
+  {body && <p class="heading__body">{body}</p>}
+</header>
+
+<style>
+  .heading {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 3rem);
+  }
+  .heading--center {
+    text-align: center;
+  }
+  .heading__eyebrow {
+    margin: 0 0 1rem;
+    color: var(--color-on-primary-mute);
+    opacity: 0.7;
+  }
+  .heading__title {
+    margin: 0;
+    max-width: 20ch;
+    text-wrap: balance;
+  }
+  .heading--center .heading__title {
+    margin-inline: auto;
+  }
+  .heading__body {
+    margin: 1.5rem 0 0;
+    max-width: 56ch;
+    color: var(--color-on-primary-mute);
+    font-size: var(--text-body-lg);
+    line-height: 1.7;
+  }
+  .heading--center .heading__body {
+    margin-inline: auto;
+  }
+</style>

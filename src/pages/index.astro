@@ -1,0 +1,398 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Nav from "@components/Nav.astro";
+import Footer from "@components/Footer.astro";
+import SmoothScroll from "@components/SmoothScroll.astro";
+import Grain from "@components/Grain.astro";
+import PhotoBand from "@components/PhotoBand.astro";
+import Reveal from "@components/Reveal.astro";
+import SectionHeading from "@components/SectionHeading.astro";
+import AnimeAmbient from "@components/AnimeAmbient.astro";
+import { site } from "@data/site";
+
+// Photographic placeholders via picsum seeds (real photography).
+// Replace `src` with the café's own graded images before launch.
+// TODO: swap every picsum URL for real Mazi photography.
+const img = (seed: string, w = 1600, h = 2000) =>
+  `https://picsum.photos/seed/${seed}/${w}/${h}`;
+---
+
+<BaseLayout
+  title={site.name}
+  description={site.description}
+  path="/"
+  image="/og-home.jpg"
+>
+  <SmoothScroll />
+  <Grain />
+  <AnimeAmbient />
+  <Nav />
+
+  <main>
+    {/* HERO */}
+    <section class="hero" id="top">
+      <img
+        class="hero__img"
+        src={img("mazi-hero-coffee-pour", 2000, 2400)}
+        alt="Morning light falling across a ceramic cup of poured coffee at the Mazi counter."
+        fetchpriority="high"
+        decoding="async"
+        data-ambient
+      />
+      <div class="hero__scrim" aria-hidden="true"></div>
+      <div class="hero__content reading-column">
+        <p class="hero__eyebrow micro-cap">North Nazimabad, Karachi</p>
+        <h1 class="hero__title display-xxl">A room to put the phone down</h1>
+        <p class="hero__body">
+          Mazi is a specialty coffee shop built on nostalgia. We pour patient coffee
+          and ask you to talk to the person across the table.
+        </p>
+        <a class="btn-ghost hero__cta" href="/contact">Visit the café</a>
+      </div>
+    </section>
+
+    {/* OUR STORY */}
+    <PhotoBand
+      image={img("mazi-story-window", 2000, 1600)}
+      alt="A worn wooden table by the window where regulars linger over refills."
+      eyebrow="Our story"
+      title="Built like a memory of an old café"
+      body="Mazi began with a simple idea: that a cup of coffee should slow you down, not speed you up. The room is shaped by the cafés our families remembered, the ones with creaking chairs and conversations that ran past midnight."
+      cta={{ label: "Read our story", href: "/our-story" }}
+      align="start"
+      size="tall"
+      id="story"
+    />
+
+    {/* FEATURED DRINKS */}
+    <section class="featured" id="featured">
+      <div class="featured__inner reading-column">
+        <SectionHeading
+          eyebrow="Featured drinks"
+          title="What people come back for"
+          body="A short list, poured with care. The full menu waits on its own page."
+        />
+        <div class="featured__grid">
+          <Reveal class="featured__card" data-stagger>
+            <img
+              src={img("mazi-cardamom-kulhad", 800, 1000)}
+              alt="A clay kulhad cup of cardamom coffee held in both hands."
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="featured__card-body">
+              <h3 class="featured__card-title display-lg">Cardamom Kulhad</h3>
+              <p class="featured__card-text">
+                Espresso steamed with green cardamom in a clay cup. Warm, familiar,
+                and ours alone.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal class="featured__card" data-stagger>
+            <img
+              src={img("mazi-v60-pour", 800, 1000)}
+              alt="A slow V60 pour catching the light over a glass server."
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="featured__card-body">
+              <h3 class="featured__card-title display-lg">Slow Pour V60</h3>
+              <p class="featured__card-text">
+                Clean, floral, bright. Brewed to order from a rotating single origin,
+                never rushed.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal class="featured__card" data-stagger>
+            <img
+              src={img("mazi-cold-brew", 800, 1000)}
+              alt="A tall glass of cold brew with ice against a dark backdrop."
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="featured__card-body">
+              <h3 class="featured__card-title display-lg">Cold Brew</h3>
+              <p class="featured__card-text">
+                Steeped eighteen hours, then cut with cold water. Smooth, low-acid,
+                easy to love.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+        <a class="btn-ghost featured__cta" href="/menu">See the full menu</a>
+      </div>
+    </section>
+
+    {/* COFFEE PHILOSOPHY */}
+    <PhotoBand
+      image={img("mazi-beans-hand", 2000, 1600)}
+      alt="Green and roasted coffee beans cupped in an open palm."
+      eyebrow="Coffee philosophy"
+      title="We treat the bean like a story"
+      body="Every origin is tasted blind, sourced with care, and roasted in small batches. We would rather serve one cup beautifully than ten in a hurry."
+      cta={{ label: "Our coffee", href: "/coffee" }}
+      align="end"
+      size="tall"
+      id="philosophy"
+    />
+
+    {/* THE EXPERIENCE */}
+    <section class="experience" id="experience">
+      <div class="experience__inner reading-column">
+        <SectionHeading
+          eyebrow="The experience"
+          title="Disconnect to reconnect"
+          body="No Wi-Fi on the tables by design. Phones go face-down. What you get back is the room, the steam, and the person in front of you."
+        />
+        <ul class="experience__list">
+          <Reveal as="li" class="experience__item" data-stagger>
+            <span class="experience__num micro-cap">01</span>
+            <h3 class="experience__title display-lg">The Slow Hour</h3>
+            <p class="experience__text">
+              Mornings before ten are kept quiet on purpose. Come for the stillness.
+            </p>
+          </Reveal>
+          <Reveal as="li" class="experience__item" data-stagger>
+            <span class="experience__num micro-cap">02</span>
+            <h3 class="experience__title display-lg">The Long Table</h3>
+            <p class="experience__text">
+              One shared table in the middle of the room. Strangers become regulars.
+            </p>
+          </Reveal>
+          <Reveal as="li" class="experience__item" data-stagger>
+            <span class="experience__num micro-cap">03</span>
+            <h3 class="experience__title display-lg">The Vinyl Nights</h3>
+            <p class="experience__text">
+              Friday evenings run on records and refills. No screens, just sound.
+            </p>
+          </Reveal>
+        </ul>
+        <a class="btn-ghost experience__cta" href="/experience">The full experience</a>
+      </div>
+    </section>
+
+    {/* GALLERY */}
+    <PhotoBand
+      image={img("mazi-gallery-room", 2000, 1600)}
+      alt="The warm interior of the café at golden hour, chairs pulled close."
+      eyebrow="Gallery"
+      title="Step inside before you arrive"
+      body="Every corner of Mazi was set down for a reason. Take a look around."
+      cta={{ label: "View gallery", href: "/gallery" }}
+      align="center"
+      size="tall"
+      id="gallery"
+    />
+
+    {/* VISIT US */}
+    <section class="visit" id="visit">
+      <div class="visit__inner reading-column">
+        <SectionHeading
+          eyebrow="Visit us"
+          title="Find the room"
+          body="We are in North Nazimabad, open early and closing late. Come as you are."
+        />
+        <div class="visit__grid">
+          <Reveal class="visit__block" data-stagger>
+            <p class="visit__label micro-cap">Address</p>
+            <p class="visit__value">{site.address.street}, {site.address.city}</p>
+          </Reveal>
+          <Reveal class="visit__block" data-stagger>
+            <p class="visit__label micro-cap">Hours</p>
+            <p class="visit__value">7:30 to late, every day</p>
+          </Reveal>
+          <Reveal class="visit__block" data-stagger>
+            <p class="visit__label micro-cap">Reserve</p>
+            <p class="visit__value">
+              <a class="visit__link" href="/contact">Book the long table</a>
+            </p>
+          </Reveal>
+        </div>
+        <a class="btn-ghost visit__cta" href="/contact">Plan your visit</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgb(0 0 0 / 0.7) 0%,
+      rgb(0 0 0 / 0.25) 45%,
+      rgb(0 0 0 / 0.15) 100%
+    );
+  }
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(5rem, 14vh, 9rem);
+  }
+  .hero__eyebrow {
+    margin: 0 0 1.25rem;
+    color: var(--color-on-primary);
+    opacity: 0.85;
+  }
+  .hero__title {
+    margin: 0;
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .hero__body {
+    margin: 1.75rem 0 0;
+    max-width: 50ch;
+    color: var(--color-on-primary-mute);
+    font-size: var(--text-body-lg);
+    line-height: 1.7;
+  }
+  .hero__cta {
+    margin-top: 2.5rem;
+  }
+
+  /* FEATURED */
+  .featured {
+    padding-block: clamp(4rem, 12vw, 8rem);
+  }
+  .featured__grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .featured__card {
+    border: 1px solid var(--color-hairline-dark);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--color-canvas-night-soft);
+  }
+  .featured__card img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  .featured__card-body {
+    padding: 1.5rem;
+  }
+  .featured__card-title {
+    margin: 0;
+    font-size: clamp(22px, 3vw, 30px);
+  }
+  .featured__card-text {
+    margin: 0.75rem 0 0;
+    color: var(--color-on-primary-mute);
+    line-height: 1.6;
+  }
+  .featured__cta {
+    margin-top: 3rem;
+  }
+
+  /* EXPERIENCE */
+  .experience {
+    padding-block: clamp(4rem, 12vw, 8rem);
+    background: var(--color-canvas-night-soft);
+  }
+  .experience__list {
+    list-style: none;
+    margin: 3rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+  .experience__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "num title" "num text";
+    gap: 0.25rem 1.5rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--color-hairline-dark);
+  }
+  .experience__item:last-child {
+    border-bottom: 1px solid var(--color-hairline-dark);
+  }
+  .experience__num {
+    grid-area: num;
+    color: var(--color-on-primary-mute);
+    opacity: 0.6;
+    padding-top: 0.4rem;
+  }
+  .experience__title {
+    grid-area: title;
+    margin: 0;
+    font-size: clamp(24px, 4vw, 38px);
+  }
+  .experience__text {
+    grid-area: text;
+    margin: 0.5rem 0 0;
+    color: var(--color-on-primary-mute);
+    max-width: 52ch;
+    line-height: 1.6;
+  }
+  .experience__cta {
+    margin-top: 3rem;
+  }
+
+  /* VISIT */
+  .visit {
+    padding-block: clamp(4rem, 12vw, 8rem);
+  }
+  .visit__grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .visit__label {
+    margin: 0 0 0.75rem;
+    color: var(--color-on-primary-mute);
+    opacity: 0.7;
+  }
+  .visit__value {
+    margin: 0;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.96px;
+    font-size: clamp(18px, 2.6vw, 24px);
+  }
+  .visit__link {
+    color: var(--color-on-primary);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .visit__cta {
+    margin-top: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .featured__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .visit__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+
+<script>
+  // Stagger grouped children on the homepage
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduce && window.maziStagger) {
+    window.maziStagger("[data-stagger]");
+  }
+</script>

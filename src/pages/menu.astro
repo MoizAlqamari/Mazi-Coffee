@@ -1,0 +1,64 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Nav from "@components/Nav.astro";
+import Footer from "@components/Footer.astro";
+import SmoothScroll from "@components/SmoothScroll.astro";
+import Grain from "@components/Grain.astro";
+import PhotoBand from "@components/PhotoBand.astro";
+import MenuList from "@components/MenuList.astro";
+import Reveal from "@components/Reveal.astro";
+
+const img = (seed: string, w = 1600, h = 2000) =>
+  `https://picsum.photos/seed/${seed}/${w}/${h}`;
+---
+
+<BaseLayout
+  title="Menu"
+  description="The Mazi menu: specialty coffee, signature drinks, desserts, and seasonal specials. Prices in PKR."
+  path="/menu"
+  image="/og-menu.jpg"
+>
+  <SmoothScroll />
+  <Grain />
+  <Nav />
+
+  <main>
+    <PhotoBand
+      image={img("mazi-menu-hero", 2000, 2400)}
+      alt="A spread of cups and a plate of pastry on a dark table."
+      title="Menu"
+      eyebrow="Coffee, signatures, desserts"
+      align="center"
+      size="full"
+    />
+
+    <section class="menu-page">
+      <div class="menu-page__inner reading-column">
+        <Reveal>
+          <p class="menu-page__note caption">
+            Prices are in PKR and change with the season. Ask at the counter for
+            today's single origin and the cake of the day.
+          </p>
+        </Reveal>
+        <MenuList />
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .menu-page {
+    padding-block: clamp(4rem, 12vw, 8rem);
+  }
+  .menu-page__inner {
+    max-width: 1200px;
+  }
+  .menu-page__note {
+    margin: 0 0 3rem;
+    color: var(--color-on-primary-mute);
+    opacity: 0.7;
+    max-width: 60ch;
+  }
+</style>

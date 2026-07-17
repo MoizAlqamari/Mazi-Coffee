@@ -1,0 +1,221 @@
+---
+import { nav, site } from "@data/site";
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
+---
+
+<header class="nav" data-nav>
+  <div class="nav__inner reading-column">
+    <a href="/" class="nav__brand" aria-label={`${site.name} home`}>
+      {site.shortName}
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={["nav__link", { "is-active": isActive(item.href) }]}
+            aria-current={isActive(item.href) ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <button
+      class="nav__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      data-nav-toggle
+    >
+      <span class="nav__toggle-label micro-cap">Menu</span>
+      <span class="nav__toggle-bars" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+  <nav class="mobile-menu__links" aria-label="Mobile">
+    {
+      nav.map((item) => (
+        <a
+          href={item.href}
+          class:list={["mobile-menu__link display-lg", { "is-active": isActive(item.href) }]}
+          aria-current={isActive(item.href) ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+  <p class="mobile-menu__foot micro-cap">{site.address.city}, Pakistan</p>
+</div>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    background: transparent;
+    transition: background-color 300ms var(--ease-out-cinematic);
+  }
+  .nav.is-scrolled {
+    background: color-mix(in srgb, var(--color-canvas-night) 82%, transparent);
+    backdrop-filter: blur(8px);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    gap: 1.5rem;
+  }
+  .nav__brand {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-on-primary);
+    text-decoration: none;
+  }
+  .nav__links {
+    display: none;
+    gap: 2rem;
+  }
+  .nav__link {
+    font-family: var(--font-body);
+    font-size: 13.008px;
+    letter-spacing: 1.17px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-on-primary);
+    text-decoration: none;
+    opacity: 0.78;
+    transition: opacity 160ms var(--ease-out-cinematic);
+  }
+  .nav__link:hover,
+  .nav__link.is-active {
+    opacity: 1;
+  }
+  .nav__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: transparent;
+    border: 1px solid var(--color-on-primary);
+    border-radius: var(--radius-pill);
+    padding: 10px 16px;
+    color: var(--color-on-primary);
+    cursor: pointer;
+  }
+  .nav__toggle-bars {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 18px;
+  }
+  .nav__toggle-bars span {
+    height: 1.5px;
+    background: var(--color-on-primary);
+    transition: transform 200ms var(--ease-out-cinematic);
+  }
+  .nav__toggle[aria-expanded="true"] .nav__toggle-bars span:first-child {
+    transform: translateY(2.75px) rotate(45deg);
+  }
+  .nav__toggle[aria-expanded="true"] .nav__toggle-bars span:last-child {
+    transform: translateY(-2.75px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 49;
+    background: var(--color-canvas-night);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 1.5rem 2rem;
+    opacity: 0;
+    transition: opacity 300ms var(--ease-out-cinematic);
+  }
+  .mobile-menu[hidden] {
+    display: none;
+  }
+  .mobile-menu.is-open {
+    opacity: 1;
+  }
+  .mobile-menu__links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .mobile-menu__link {
+    color: var(--color-on-primary);
+    text-decoration: none;
+    opacity: 0.85;
+  }
+  .mobile-menu__link.is-active {
+    opacity: 1;
+  }
+  .mobile-menu__foot {
+    margin-top: auto;
+    color: var(--color-on-primary-mute);
+    opacity: 0.6;
+  }
+
+  @media (min-width: 768px) {
+    .nav__links {
+      display: flex;
+    }
+    .nav__toggle {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-nav]");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+  const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+
+  const onScroll = () => {
+    if (!header) return;
+    header.classList.toggle("is-scrolled", window.scrollY > 24);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  const setMenu = (open: boolean) => {
+    if (!toggle || !menu) return;
+    toggle.setAttribute("aria-expanded", String(open));
+    menu.hidden = false;
+    menu.classList.toggle("is-open", open);
+    document.dispatchEvent(new CustomEvent("mazi:menu", { detail: open }));
+    if (!open) {
+      // allow fade-out before hiding
+      window.setTimeout(() => {
+        if (!menu.classList.contains("is-open")) menu.hidden = true;
+      }, 300);
+    }
+  };
+
+  toggle?.addEventListener("click", () => {
+    setMenu(toggle.getAttribute("aria-expanded") !== "true");
+  });
+
+  menu?.querySelectorAll("a").forEach((a) =>
+    a.addEventListener("click", () => setMenu(false))
+  );
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setMenu(false);
+  });
+</script>
